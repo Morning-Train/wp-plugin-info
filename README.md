@@ -1,10 +1,10 @@
-# Morningtrain\WP\PluginUpdater
+# Morningtrain\WP\PluginInfo
 
-Make it possible to update a plugin through a private plugin repo.
+Make it easy to get information about a plugin.
 
 ## Getting started
 
-To get started with the module simply register with `\Morningtrain\WP\PluginUpdater\PluginUpdater::register()`;
+To get started just construct an instance of `\Morningtrain\WP\PluginInfo\PluginInfo`;
 
 ### Example
 
@@ -12,10 +12,5 @@ To get started with the module simply register with `\Morningtrain\WP\PluginUpda
 // plugin.php
 require __DIR__ . "/vendor/autoload.php";
 
-use Morningtrain\WP\Core\Plugin;
-
-$plugin = Plugin::init();
-
-// Add our module
-$plguin->addModule(new \Morningtrain\WP\PluginUpdater\Module('https://plugins.morningtrain.dk/mtt-plugin-repository/[UNIQUE_TOKEN]/plugin-info/'));
+$plugin_info = new \Morningtrain\WP\PluginUpdater\PluginInfo(__FILE__);
 ```
