@@ -3,7 +3,7 @@
     "description": "Helper class to handle info about a plugin",
     "minimum-stability": "stable",
     "license": "proprietary",
-    "version": "v0.1.0",
+    "version": "v0.2.0",
     "authors": [
         {
             "name": "Martin Schadegg Brønniche",
@@ -12,7 +12,7 @@
     ],
     "autoload": {
         "psr-4": {
-            "Morningtrain\\WP\\PluginUpdater\\": "src/"
+            "Morningtrain\\WP\\PluginInfo\\": "src/"
         }
     }
 }
