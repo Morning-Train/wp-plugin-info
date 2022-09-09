@@ -41,11 +41,11 @@ class PluginInfo {
      */
 	public function getData(string $data_name, string $default = null): string
     {
-		if(!isset($plugin_data[$data_name])) {
+		if(!isset($this->plugin_data[$data_name])) {
 			return $default;
 		}
 
-		return (string) $plugin_data[$data_name];
+		return (string) $this->plugin_data[$data_name];
 	}
 
     /**
