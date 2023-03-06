@@ -1,9 +1,7 @@
 {
     "name": "morningtrain/wp-plugin-info",
     "description": "Helper class to handle info about a plugin",
-    "minimum-stability": "stable",
-    "license": "proprietary",
-    "version": "v0.2.1",
+    "license": "MIT",
     "authors": [
         {
             "name": "Martin Schadegg Brønniche",
