@@ -68,7 +68,7 @@ class PluginInfo {
      */
     public function setNamedPath(string $name, string $path): self
     {
-        $this->namedPaths[$name] = wp_normalize_path($path);
+        $this->namedPaths[$name] = trailingslashit(wp_normalize_path($path));
 
         return $this;
     }
