@@ -38,28 +38,58 @@ composer require morningtrain/wp-plugin-info
 
 ### Initialize
 
-To get started just construct an instance of `\Morningtrain\WP\PluginInfo\PluginInfo`;
+To get started register a plugin file;
 
 ```php
 // plugin.php
 require __DIR__ . "/vendor/autoload.php";
 
-$plugin_info = new \Morningtrain\WP\PluginUpdater\PluginInfo(__FILE__);
+$plugin_info = Morningtrain\WP\PluginUpdater\PluginInfo::register(__FILE__);
+```
+
+### Set Slug
+You can set a slug by setting `Plugin Slug` header in the plugin header.
+Alternatively you can set the slug with the `setSlug` method on the `PluginInfo` instance.
+This is useful get the information about your plugin later.
+
+
+### Set a named path
+You can set a named path, that you can use to get the path later. It must be an absolute path. You can set a path in the plugin folder or any other place.
+
+```php
+$plugin_info->setNamedPath('app', __DIR__ . '/app');
+$plugin_info->setNamedPath('logs', WP_CONTENT_DIR . '/logs');
+```
+
+### Retrieve a PluginInfo instance
+You can retrieve a PluginInfo instance by using the `get` method on the `PluginInfo` class.
+
+```php
+$plugin_info = Morningtrain\WP\PluginUpdater\PluginInfo::get('pluginSlug');
 ```
 
 ### Retrieve Information
 
 | Function             | Example                                    | Description                                           |
 |----------------------|--------------------------------------------|-------------------------------------------------------|
-| getRoot              | `$plugin_info->getRoot()`                  | Get root path for the plugin                          |
 | getData              | `$plugin_info->getData('Name', 'Default')` | Get data from plugins data                            |
+| getNamedPath         | `$plugin_info->getNamedPath('pathName')`   | Get named path                                        |
+| getRoot              | `$plugin_info->getRoot()`                  | Get root path for the plugin                          |
 | getBaseName          | `$plugin_info->getBaseName()`              | Base name of plugin ex. "plugin-name/plugin-name.php" |
+| getSlug              | `$plugin_info->getSlug()`                  | Get slug of plugin                                    |
 | getName              | `$plugin_info->getName()`                  | Get name of plugin                                    |
-| getTextDomain        | `$plugin_info->getTextDomain()`            | Get textdomain of plugin                              |
+| getPluginURI         | `$plugin_info->getPluginURI()`             | Get plugin URI                                        |
 | getVersion           | `$plugin_info->getVersion()`               | Get version of plugin                                 |
+| getDescription       | `$plugin_info->getDescription()`           | Get description of plugin                             |
+| getAuthor            | `$plugin_info->getAuthor()`                | Get author of plugin - Formatted as link              |
+| getAuthorURI         | `$plugin_info->getAuthorURI()`             | Get author URI                                        |
+| getTextDomain        | `$plugin_info->getTextDomain()`            | Get textdomain of plugin                              |
 | getDomainPath        | `$plugin_info->getDomainPath()`            | Get Translations path                                 |
 | getRequiresWPVersion | `$plugin_info->getRequiresWPVersion()`     | Get which WordPress version is required at least      |
 | getRequiresWPVersion | `$plugin_info->getRequiresPHPVersion()`    | Get which PHP version is required at least            |
+| getUpdateURI         | `$plugin_info->getUpdateURI()`             | Get update URI                                        |
+| getTitle             | `$plugin_info->getTitle()`                 | Get title of plugin                                   |
+| getAuthorName        | `$plugin_info->getAuthorName()`            | Get author of plugin - Formatted as text              |
 
 ## Contributing
 
