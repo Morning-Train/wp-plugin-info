@@ -61,6 +61,22 @@ $plugin_info->setNamedPath('app', __DIR__ . '/app');
 $plugin_info->setNamedPath('logs', WP_CONTENT_DIR . '/logs');
 ```
 
+### Set a named URL
+You can set a named URL, that you can use to get the URL later. It must be an absolute URL. You can set a URL in the plugin folder or any other place.
+
+```php
+$plugin_info->setNamedUrl('images', $plugin_info->getRootUrl() . 'public/iamges');
+$plugin_info->setNamedUrl('invoices', content_url('private/invoices'));
+```
+
+### Set a named Parameter
+You can set a named parameter, that you can use to get the parameter later. You can set anything with relevance to your plugin.
+
+```php
+$plugin_info->setNamedParameter('license', $license);
+```
+
+
 ### Retrieve a PluginInfo instance
 You can retrieve a PluginInfo instance by using the `get` method on the `PluginInfo` class.
 
@@ -70,26 +86,30 @@ $plugin_info = Morningtrain\WP\PluginUpdater\PluginInfo::get('pluginSlug');
 
 ### Retrieve Information
 
-| Function             | Example                                    | Description                                           |
-|----------------------|--------------------------------------------|-------------------------------------------------------|
-| getData              | `$plugin_info->getData('Name', 'Default')` | Get data from plugins data                            |
-| getNamedPath         | `$plugin_info->getNamedPath('pathName')`   | Get named path                                        |
-| getRoot              | `$plugin_info->getRoot()`                  | Get root path for the plugin                          |
-| getBaseName          | `$plugin_info->getBaseName()`              | Base name of plugin ex. "plugin-name/plugin-name.php" |
-| getSlug              | `$plugin_info->getSlug()`                  | Get slug of plugin                                    |
-| getName              | `$plugin_info->getName()`                  | Get name of plugin                                    |
-| getPluginURI         | `$plugin_info->getPluginURI()`             | Get plugin URI                                        |
-| getVersion           | `$plugin_info->getVersion()`               | Get version of plugin                                 |
-| getDescription       | `$plugin_info->getDescription()`           | Get description of plugin                             |
-| getAuthor            | `$plugin_info->getAuthor()`                | Get author of plugin - Formatted as link              |
-| getAuthorURI         | `$plugin_info->getAuthorURI()`             | Get author URI                                        |
-| getTextDomain        | `$plugin_info->getTextDomain()`            | Get textdomain of plugin                              |
-| getDomainPath        | `$plugin_info->getDomainPath()`            | Get Translations path                                 |
-| getRequiresWPVersion | `$plugin_info->getRequiresWPVersion()`     | Get which WordPress version is required at least      |
-| getRequiresWPVersion | `$plugin_info->getRequiresPHPVersion()`    | Get which PHP version is required at least            |
-| getUpdateURI         | `$plugin_info->getUpdateURI()`             | Get update URI                                        |
-| getTitle             | `$plugin_info->getTitle()`                 | Get title of plugin                                   |
-| getAuthorName        | `$plugin_info->getAuthorName()`            | Get author of plugin - Formatted as text              |
+| Function             | Example                                            | Description                                           |
+|----------------------|----------------------------------------------------|-------------------------------------------------------|
+| getData              | `$plugin_info->getData('Name', 'Default')`         | Get data from plugins data                            |
+| getNamedPath         | `$plugin_info->getNamedPath('pathName')`           | Get named path                                        |
+| getNamedUrl          | `$plugin_info->getNamedUrl('urlName')`             | Get named URL                                         |
+| getNamedParameter    | `$plugin_info->getNamedParameter('parameterName')` | Get named parameter                                   |
+| getRoot              | `$plugin_info->getRoot()`                          | Get root path for the plugin                          |
+| getRootUrl           | `$plugin_info->getRootUrl()`                       | Get root URL for the plugin                           |
+| getPluginFilePath    | `$plugin_info->getPluginFilePath()`                | Get path to plugin file                               |
+| getBaseName          | `$plugin_info->getBaseName()`                      | Base name of plugin ex. "plugin-name/plugin-name.php" |
+| getSlug              | `$plugin_info->getSlug()`                          | Get slug of plugin                                    |
+| getName              | `$plugin_info->getName()`                          | Get name of plugin                                    |
+| getPluginURI         | `$plugin_info->getPluginURI()`                     | Get plugin URI                                        |
+| getVersion           | `$plugin_info->getVersion()`                       | Get version of plugin                                 |
+| getDescription       | `$plugin_info->getDescription()`                   | Get description of plugin                             |
+| getAuthor            | `$plugin_info->getAuthor()`                        | Get author of plugin - Formatted as link              |
+| getAuthorURI         | `$plugin_info->getAuthorURI()`                     | Get author URI                                        |
+| getTextDomain        | `$plugin_info->getTextDomain()`                    | Get textdomain of plugin                              |
+| getDomainPath        | `$plugin_info->getDomainPath()`                    | Get Translations path                                 |
+| getRequiresWPVersion | `$plugin_info->getRequiresWPVersion()`             | Get which WordPress version is required at least      |
+| getRequiresWPVersion | `$plugin_info->getRequiresPHPVersion()`            | Get which PHP version is required at least            |
+| getUpdateURI         | `$plugin_info->getUpdateURI()`                     | Get update URI                                        |
+| getTitle             | `$plugin_info->getTitle()`                         | Get title of plugin                                   |
+| getAuthorName        | `$plugin_info->getAuthorName()`                    | Get author of plugin - Formatted as text              |
 
 ## Contributing
 

@@ -5,9 +5,13 @@ use Morningtrain\WP\PluginInfo\Handlers\PluginHeadersHandler;
 class PluginInfo {
 
 	protected string $root;
+	protected string $rootUrl;
+    protected string $pluginFilePath;
 	protected array $pluginData;
     protected string $slug;
     protected array $namedPaths = [];
+    protected array $namedUrls = [];
+    protected array $namedParams = [];
 
     protected static array $instances = [];
 
@@ -41,11 +45,13 @@ class PluginInfo {
      * Construct the PluginInfo instance
      * @param string $pluginFile
      */
-	public function __construct(protected string $pluginFile)
+	public function __construct(string $pluginFile)
     {
         add_action('extra_plugin_headers', [PluginHeadersHandler::class, 'addExtraPluginHeaders'], 10, 1);
 
-		$this->root = trailingslashit(wp_normalize_path(plugin_dir_path($this->pluginFile)));
+        $this->pluginFilePath = wp_normalize_path($pluginFile);
+		$this->root = trailingslashit(wp_normalize_path(plugin_dir_path($this->getPluginFilePath())));
+        $this->rootUrl = set_url_scheme(plugin_dir_url($this->getPluginFilePath()), 'https');
 		$this->pluginData = $this->extractPluginData();
 	}
 
@@ -68,7 +74,39 @@ class PluginInfo {
      */
     public function setNamedPath(string $name, string $path): self
     {
-        $this->namedPaths[$name] = trailingslashit(wp_normalize_path($path));
+        $path = wp_normalize_path($path);
+
+        if(is_dir($path)) {
+            $path = trailingslashit($path);
+        }
+
+        $this->namedPaths[$name] = $path;
+
+        return $this;
+    }
+
+    /**
+     * Set a named absolute url
+     * @param string $name
+     * @param string $url
+     * @return $this
+     */
+    public function setNamedUrl(string $name, string $url): self
+    {
+        $this->namedUrls[$name] = $url;
+
+        return $this;
+    }
+
+    /**
+     * Set a named parameter
+     * @param string $name
+     * @param mixed $value
+     * @return $this
+     */
+    public function setNamedParameter(string $name, mixed $value): self
+    {
+        $this->namedParams[$name] = $value;
 
         return $this;
     }
@@ -83,7 +121,7 @@ class PluginInfo {
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 		}
 
-		return get_plugin_data($this->pluginFile);
+		return get_plugin_data($this->getPluginFilePath());
 	}
 
     /**
@@ -102,13 +140,42 @@ class PluginInfo {
     }
 
     /**
-     * Get af named path
+     * Get a named path
      * @param string $name
      * @return string|null
      */
     public function getNamedPath(string $name): ?string
     {
         return $this->namedPaths[$name] ?? null;
+    }
+
+    /**
+     * Get a named URL
+     * @param string $name
+     * @return string|null
+     */
+    public function getNamedUrl(string $name): ?string
+    {
+        return $this->namedUrls[$name] ?? null;
+    }
+
+    /**
+     * Get a named Parameter
+     * @param string $name
+     * @return mixed
+     */
+    public function getNamedParameter(string $name): mixed
+    {
+        return $this->namedParams[$name] ?? null;
+    }
+
+    /**
+     * Get Plugin file path
+     * @return string
+     */
+    public function getPluginFilePath(): string
+    {
+        return $this->pluginFilePath;
     }
 
     /**
@@ -121,12 +188,21 @@ class PluginInfo {
 	}
 
     /**
+     * Get root url for the plugin with a trailing slash and https scheme
+     * @return string
+     */
+    public function getRootUrl(): string
+    {
+        return $this->rootUrl;
+    }
+
+    /**
      * Base name of plugin ex. "plugin-name/plugin-name.php"
      * @return string
      */
 	public function getBaseName(): string
     {
-		return plugin_basename($this->pluginFile);
+		return plugin_basename($this->getPluginFilePath());
 	}
 
     /**
