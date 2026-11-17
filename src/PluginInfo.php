@@ -135,7 +135,7 @@ class PluginInfo {
      * @param string|null $default
      * @return string
      */
-    public function getData(string $dataName, string $default = null): string
+    public function getData(string $dataName, ?string $default = null): string
     {
         if(!isset($this->pluginData[$dataName])) {
             return $default;
