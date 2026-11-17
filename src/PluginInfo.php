@@ -8,6 +8,7 @@ class PluginInfo {
 	protected string $rootUrl;
     protected string $pluginFilePath;
 	protected array $pluginData;
+    protected bool $pluginDataTranslated = false;
     protected string $slug;
     protected array $namedPaths = [];
     protected array $namedUrls = [];
@@ -113,6 +114,15 @@ class PluginInfo {
 
     /**
      * Extracts plugin data from the plugin file
+     *
+     * Translated only once init has run. PluginInfo is usually created when
+     * the plugin loads, and translating the header there loads the plugin's
+     * text domain too early: WordPress 6.7+ reports it as
+     * _load_textdomain_just_in_time "called incorrectly", and with
+     * WP_DEBUG_DISPLAY the notice breaks REST responses. Loading a text domain
+     * also determines the user's locale, which would resolve the current user
+     * before WordPress does. getData() reads the data again, translated, the
+     * first time it is called after init.
      * @return array
      */
 	protected function extractPluginData(): array
@@ -121,8 +131,19 @@ class PluginInfo {
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 		}
 
-		return get_plugin_data($this->getPluginFilePath());
+		$this->pluginDataTranslated = static::canTranslate();
+
+		return get_plugin_data($this->getPluginFilePath(), true, $this->pluginDataTranslated);
 	}
+
+    /**
+     * Whether plugin data can be translated yet
+     * @return bool
+     */
+    protected static function canTranslate(): bool
+    {
+        return function_exists('did_action') && did_action('init') > 0;
+    }
 
     /**
      * Get data from plugins data
@@ -130,8 +151,12 @@ class PluginInfo {
      * @param string|null $default
      * @return string
      */
-    public function getData(string $dataName, string $default = null): string
+    public function getData(string $dataName, ?string $default = null): string
     {
+        if(!$this->pluginDataTranslated && static::canTranslate()) {
+            $this->pluginData = $this->extractPluginData();
+        }
+
         if(!isset($this->pluginData[$dataName])) {
             return $default;
         }
