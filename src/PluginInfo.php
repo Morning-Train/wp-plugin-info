@@ -121,7 +121,12 @@ class PluginInfo {
 			require_once(ABSPATH . 'wp-admin/includes/plugin.php');
 		}
 
-		return get_plugin_data($this->getPluginFilePath());
+		// Not translated: PluginInfo is usually created when the plugin loads,
+		// and translating the header there loads the plugin's text domain before
+		// init, which WordPress 6.7+ reports as _load_textdomain_just_in_time
+		// "called incorrectly". With WP_DEBUG_DISPLAY that notice is printed
+		// before any output and breaks REST responses. Markup is kept as before.
+		return get_plugin_data($this->getPluginFilePath(), true, false);
 	}
 
     /**
